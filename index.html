@@ -3,112 +3,275 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Johnson Reply · Playwright test suites, $1,500 flat</title>
-<meta name="description" content="Playwright end-to-end test suites for web teams. Runs on every deploy, lives in your repo, yours to keep. $1,500 flat, live in 2 weeks.">
-<meta property="og:title" content="Johnson Reply · Playwright test suites, $1,500 flat">
-<meta property="og:description" content="A Playwright suite that runs on every deploy, lives in your repo and is yours to keep. $1,500 flat, live in 2 weeks.">
+<title>Johnson Reply · Playwright E2E testing, done for you</title>
+<meta name="description" content="Playwright end-to-end tests written, run and maintained for you. Jump Start: $1,500 flat, live in 2 weeks. Coverage-as-a-Service: $1,250/month.">
+<meta property="og:title" content="Johnson Reply · Playwright E2E testing, done for you">
+<meta property="og:description" content="Playwright tests written, run and maintained for you. Jump Start $1,500 flat. Coverage-as-a-Service $1,250/month.">
 <meta property="og:url" content="https://johnsonreply.com/">
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://johnsonreply.com/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f6f4a'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' stroke='white' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23166534'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' stroke='white' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
 :root{
-  --bg:#fbfaf7; --surface:#ffffff; --ink:#1b1d1f; --muted:#5d6268; --line:#e4e1da;
-  --accent:#1f6f4a; --accent-ink:#ffffff; --code-bg:#15181b; --code-ink:#d9dee3;
-  --fail:#e5534b; --pass:#3fb950; --dim:#8b949e;
+  --bg:#ffffff; --soft:#f4f6f4; --ink:#121614; --muted:#56605a; --line:#e2e7e3;
+  --brand:#166534; --brand-2:#15803d; --brand-ink:#ffffff; --tint:#ecf5ef;
+  --code-bg:#101412; --code-ink:#d8e0db; --fail:#dc4c43; --pass:#22a35a; --dim:#8a958e;
+  --mock:#ffffff;
 }
 @media (prefers-color-scheme: dark){
-  :root{ --bg:#111315; --surface:#181b1e; --ink:#eceae6; --muted:#a2a7ad; --line:#2a2e33;
-    --accent:#4cc38a; --accent-ink:#0b1a12; --code-bg:#0b0d0f; }
+  :root{ --bg:#0e1210; --soft:#151a17; --ink:#e9eeea; --muted:#9ba7a0; --line:#26302a;
+    --brand:#1f7a43; --brand-2:#4ade80; --tint:#16251c; --mock:#1b221e; --code-bg:#090b0a; }
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);
-  font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
-a{color:var(--accent)}
-.wrap{max-width:860px;margin:0 auto;padding:0 20px}
-header{border-bottom:1px solid var(--line)}
-header .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:18px;padding-bottom:18px}
-.brand{font-weight:700;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
-.brand span{color:var(--muted);font-weight:500}
-header nav a{color:var(--muted);text-decoration:none;font-size:15px;margin-left:18px}
-header nav a:hover{color:var(--ink)}
-.hero{padding-top:72px;padding-bottom:56px}
-.eyebrow{font-size:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:0 0 14px}
-h1{font-size:clamp(34px,6vw,52px);line-height:1.08;letter-spacing:-.025em;margin:0 0 20px;max-width:16ch}
-.lede{font-size:20px;color:var(--muted);max-width:40ch;margin:0 0 30px}
-.price{display:flex;flex-wrap:wrap;gap:10px 28px;margin:0 0 32px;padding:0;list-style:none;font-weight:600}
-.price li::before{content:"✓";color:var(--accent);margin-right:8px}
-.btn{display:inline-block;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:600;
-  padding:14px 22px;border-radius:10px}
-.btn:hover{filter:brightness(1.08)}
-.btn-note{display:block;margin-top:12px;font-size:15px;color:var(--muted)}
-section{padding:56px 0;border-top:1px solid var(--line)}
-h2{font-size:28px;letter-spacing:-.015em;line-height:1.2;margin:0 0 14px}
-.sub{color:var(--muted);margin:0 0 28px;max-width:60ch}
-pre{background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:20px;overflow-x:auto;
-  font:14px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin:0}
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+a{color:var(--brand-2)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+/* header + hero */
+.hero{background:var(--brand);color:var(--brand-ink);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;
+  background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);
+  background-size:28px 28px;mask-image:linear-gradient(120deg,transparent 35%,#000 100%);-webkit-mask-image:linear-gradient(120deg,transparent 35%,#000 100%)}
+.top{display:flex;justify-content:space-between;align-items:center;padding:20px 0;position:relative;z-index:1}
+.brand{color:#fff;text-decoration:none;font-weight:800;letter-spacing:-.01em;font-size:18px}
+.top nav{display:flex;gap:22px;align-items:center}
+.top nav a{color:rgba(255,255,255,.85);text-decoration:none;font-size:14px}
+.top nav a:hover{color:#fff}
+.hero-body{padding:64px 0 88px;position:relative;z-index:1}
+h1{font-size:clamp(38px,6.4vw,66px);line-height:1.04;letter-spacing:-.03em;margin:0 0 20px;max-width:13ch}
+.hero p.lede{font-size:clamp(17px,2vw,20px);max-width:44ch;margin:0 0 32px;color:rgba(255,255,255,.9)}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-block;text-decoration:none;font-weight:600;font-size:15px;padding:12px 20px;border-radius:8px;border:1.5px solid transparent}
+.btn-white{background:#fff;color:#14361f}
+.btn-ghost{border-color:rgba(255,255,255,.75);color:#fff}
+.btn-brand{background:var(--brand);color:#fff}
+.btn-line{border-color:var(--line);color:var(--ink)}
+.btn:hover{filter:brightness(1.06)}
+.hero small{display:block;margin-top:16px;color:rgba(255,255,255,.75);font-size:14px}
+
+/* stack strip */
+.strip{border-bottom:1px solid var(--line)}
+.strip .wrap{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:center;justify-content:center;padding-top:20px;padding-bottom:20px;color:var(--muted);font-size:14px;font-weight:600}
+.strip span.lbl{font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+
+section{padding:88px 0}
+section.alt{background:var(--soft)}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--brand-2);margin:0 0 10px}
+h2{font-size:clamp(28px,3.6vw,40px);letter-spacing:-.02em;line-height:1.1;margin:0 0 14px}
+.sub{color:var(--muted);max-width:58ch;margin:0 0 40px;font-size:17px}
+
+/* process cards */
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.viz{background:var(--tint);padding:18px;height:172px;display:flex;align-items:center;justify-content:center}
+.win{background:var(--mock);border:1px solid var(--line);border-radius:8px;width:100%;font-size:12px;line-height:1.5;padding:10px 12px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.win.mono{white-space:pre;overflow:hidden;font-size:11px}
+.win .bar{font-size:11px;color:var(--dim);margin-bottom:6px;display:flex;justify-content:space-between}
+.win .row{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px dashed var(--line)}
+.win .row:last-child{border-bottom:0}
+.ok{color:var(--pass);font-weight:700} .bad{color:var(--fail);font-weight:700} .dm{color:var(--dim)}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:99px;background:var(--tint);color:var(--brand-2)}
+.card .txt{padding:18px 20px 22px}
+.card h3{margin:0 0 6px;font-size:17px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.n{font-size:12px;font-weight:700;color:var(--brand-2);letter-spacing:.06em}
+
+/* bug demo */
+pre{background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:22px;overflow-x:auto;
+  font:13.5px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin:0}
 .f{color:var(--fail)} .p{color:var(--pass)} .d{color:var(--dim)}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px}
-.card h3{font-size:17px;margin:0 0 6px}
-.card p{margin:0;color:var(--muted);font-size:16px}
-ol.steps{list-style:none;margin:0;padding:0;counter-reset:s}
-ol.steps li{counter-increment:s;position:relative;padding:0 0 22px 52px}
-ol.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:34px;height:34px;border-radius:50%;
-  background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;font-weight:700;font-size:15px}
-ol.steps strong{display:block}
-ol.steps span{color:var(--muted)}
-.proof{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-dl{margin:0}
-dt{font-weight:600;margin-top:20px}
-dt:first-child{margin-top:0}
-dd{margin:6px 0 0;color:var(--muted)}
-.cta{text-align:left}
-footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);font-size:14px}
-footer p{margin:4px 0}
-@media (max-width:640px){
-  body{font-size:16px}
-  .hero{padding-top:48px;padding-bottom:40px}
-  .lede{font-size:18px}
-  .grid,.proof{grid-template-columns:1fr}
-  header nav{display:none}
-  section{padding:44px 0}
-  pre{font-size:12.5px;padding:16px}
+.split{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:center}
+.checks{list-style:none;padding:0;margin:0}
+.checks li{padding:8px 0 8px 30px;position:relative;color:var(--muted)}
+.checks li strong{color:var(--ink)}
+.checks li::before{content:"✓";position:absolute;left:0;top:8px;color:var(--brand-2);font-weight:800}
+
+/* offers */
+.offers-band{background:var(--brand);border-radius:20px;padding:48px;color:#fff}
+.offers-band h2{color:#fff}
+.offers-band .sub{color:rgba(255,255,255,.85)}
+.offers{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.offer{background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:28px;display:flex;flex-direction:column}
+.offer .tag{font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,.75)}
+.offer h3{font-size:26px;margin:6px 0 4px;letter-spacing:-.01em}
+.price{font-size:34px;font-weight:800;letter-spacing:-.02em;margin:10px 0 2px}
+.price span{font-size:15px;font-weight:500;color:rgba(255,255,255,.75)}
+.offer ul{list-style:none;padding:0;margin:16px 0 24px;flex:1}
+.offer li{padding:6px 0 6px 26px;position:relative;color:rgba(255,255,255,.92);font-size:15px}
+.offer li::before{content:"✓";position:absolute;left:0;font-weight:800;color:#86efac}
+.offer .btn{align-self:flex-start}
+
+/* proof */
+.proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.proof .card{padding:24px}
+.proof .big{font-size:36px;font-weight:800;letter-spacing:-.02em;color:var(--brand-2);line-height:1;margin-bottom:10px}
+
+/* faq */
+.faq{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.faq-group{border:1px solid var(--line);border-radius:14px;padding:8px 22px;background:var(--bg)}
+.faq-group .kicker{margin:16px 0 4px}
+details{border-bottom:1px solid var(--line);padding:14px 0}
+details:last-child{border-bottom:0}
+summary{cursor:pointer;font-weight:600;list-style:none;position:relative;padding-right:24px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:0;top:-2px;font-size:20px;color:var(--dim)}
+details[open] summary::after{content:"–"}
+details p{margin:10px 0 0;color:var(--muted);font-size:15px}
+
+/* closing */
+.close{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.close .card{padding:32px}
+.close h3{font-size:24px;margin:6px 0 10px;letter-spacing:-.01em}
+.close p{margin:0 0 22px}
+
+footer{border-top:1px solid var(--line);padding:32px 0 44px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+footer p{margin:2px 0}
+
+@media (max-width:900px){
+  .cards,.proof{grid-template-columns:1fr 1fr}
+  .split,.offers,.faq,.close{grid-template-columns:1fr}
+  .offers-band{padding:28px 20px}
+}
+@media (max-width:620px){
+  .wrap{padding:0 16px}
+  .top nav a:not(.cta-link){display:none}
+  .cards,.proof{grid-template-columns:1fr}
+  section{padding:60px 0}
+  .hero-body{padding:40px 0 64px}
+  pre{font-size:12px;padding:16px}
 }
 </style>
 </head>
 <body>
 
-<header>
+<div class="hero">
   <div class="wrap">
-    <a class="brand" href="/">Johnson Reply <span>· Tyler Johnson, SDET</span></a>
-    <nav><a href="#what">What you get</a><a href="#how">How it works</a><a href="#proof">Proof</a><a href="#contact">Contact</a></nav>
+    <div class="top">
+      <a class="brand" href="/">Johnson Reply</a>
+      <nav>
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a class="cta-link" href="mailto:tjohnson@johnsonreply.com?subject=Playwright%20coverage">Contact</a>
+      </nav>
+    </div>
+    <div class="hero-body">
+      <h1>E2E testing, done for you.</h1>
+      <p class="lede">Playwright tests written, run and maintained by an SDET, so your team ships without wondering what just broke.</p>
+      <div class="btns">
+        <a class="btn btn-white" href="mailto:tjohnson@johnsonreply.com?subject=Free%20bug%20report&amp;body=My%20site%3A%20">Get a free bug report</a>
+        <a class="btn btn-ghost" href="#pricing">See pricing</a>
+      </div>
+      <small>Send your URL. You'll get back a real bug and the test that catches it, at no cost.</small>
+    </div>
   </div>
-</header>
-
-<main>
-<div class="wrap hero">
-  <p class="eyebrow">Playwright end-to-end testing</p>
-  <h1>A test suite that catches it before your customers do.</h1>
-  <p class="lede">I build Playwright suites for web teams. The suite runs on every deploy, lives in your repo and is yours to keep.</p>
-  <ul class="price">
-    <li>$1,500 flat</li>
-    <li>Live in 2 weeks</li>
-    <li>No retainer, no lock-in</li>
-  </ul>
-  <a class="btn" href="mailto:tjohnson@johnsonreply.com?subject=Playwright%20suite">Email tjohnson@johnsonreply.com</a>
-  <span class="btn-note">A real person replies, usually the same day.</span>
 </div>
 
-<section>
+<div class="strip">
   <div class="wrap">
-    <h2>It starts with a bug on your site</h2>
-    <p class="sub">Before pitching anything, I run Playwright across Chrome, Safari, Firefox and iPhone and send you a real problem I found on your site, plus the test that catches it. Here's typical output:</p>
+    <span class="lbl">Works with</span>
+    <span>Playwright</span><span>GitHub Actions</span><span>GitLab CI</span><span>Linear</span><span>Jira</span><span>Slack</span>
+  </div>
+</div>
+
+<main>
+<section id="how">
+  <div class="wrap">
+    <p class="kicker">How it works</p>
+    <h2>The full QA cycle, handled</h2>
+    <p class="sub">Everything a QA engineer does for end-to-end coverage, delivered as a flat-price service.</p>
+    <div class="cards">
+
+      <div class="card">
+        <div class="viz"><div class="win">
+          <div class="bar"><span>Test plan</span><span class="pill">12 flows</span></div>
+          <div class="row"><span>Sign up</span><span class="dm">3 tests</span></div>
+          <div class="row"><span>Log in / reset password</span><span class="dm">3 tests</span></div>
+          <div class="row"><span>Checkout</span><span class="dm">4 tests</span></div>
+          <div class="row"><span>Billing settings</span><span class="dm">2 tests</span></div>
+        </div></div>
+        <div class="txt"><span class="n">01</span><h3>Coverage planning</h3><p>We map the flows that make you money and agree on a written test plan before a line of code is written.</p></div>
+      </div>
+
+      <div class="card">
+        <div class="viz"><div class="win mono">
+          <div class="bar"><span>checkout.spec.ts</span><span>Playwright</span></div>
+          <div>test('pays with saved card', async ({ page }) =&gt; {</div>
+          <div>  await page.goto('/cart');</div>
+          <div>  await page.getByRole('button', { name: 'Pay' }).click();</div>
+          <div>  await expect(page.getByText('Paid')).toBeVisible();</div>
+          <div>});</div>
+        </div></div>
+        <div class="txt"><span class="n">02</span><h3>Test creation</h3><p>Tests are written in open-source Playwright and TypeScript, in your repo. No proprietary platform.</p></div>
+      </div>
+
+      <div class="card">
+        <div class="viz"><div class="win">
+          <div class="bar"><span>PR #214 · e2e</span><span class="ok">passed</span></div>
+          <div class="row"><span>Chrome</span><span class="ok">✓ 38</span></div>
+          <div class="row"><span>Safari</span><span class="ok">✓ 38</span></div>
+          <div class="row"><span>Firefox</span><span class="ok">✓ 38</span></div>
+          <div class="row"><span>iPhone</span><span class="ok">✓ 38</span></div>
+        </div></div>
+        <div class="txt"><span class="n">03</span><h3>Runs on every PR</h3><p>Wired into your CI across Chrome, Safari, Firefox and mobile, so problems show up before merge, not after release.</p></div>
+      </div>
+
+      <div class="card">
+        <div class="viz"><div class="win">
+          <div class="bar"><span>Guest checkout</span><span class="bad">failed</span></div>
+          <div class="row"><span>Read the error and trace</span><span class="ok">✓</span></div>
+          <div class="row"><span>Compared with last pass</span><span class="ok">✓</span></div>
+          <div class="row"><span>Reproduced by hand</span><span class="ok">✓</span></div>
+          <div style="margin-top:6px"><strong>Verdict:</strong> real bug, not a flake</div>
+        </div></div>
+        <div class="txt"><span class="n">04</span><h3>Failure investigation</h3><p>Every red build is diagnosed before your team spends a minute on it: real bug, or test that needs updating.</p></div>
+      </div>
+
+      <div class="card">
+        <div class="viz"><div class="win mono">
+          <div class="bar"><span>checkout.page.ts</span><span class="ok">repaired</span></div>
+          <div class="bad">- getByRole('button', { name: 'Place order' })</div>
+          <div class="ok">+ getByRole('button', { name: 'Pay now' })</div>
+          <div class="dm" style="margin-top:6px">UI copy changed in PR #219, test updated</div>
+        </div></div>
+        <div class="txt"><span class="n">05</span><h3>Test maintenance</h3><p>When your app changes, the tests change with it. No slowly rotting suite that everyone learns to ignore.</p></div>
+      </div>
+
+      <div class="card">
+        <div class="viz"><div class="win">
+          <div class="bar"><span>Bug report</span><span class="pill">filed to Linear</span></div>
+          <div><strong>Payment fails silently on expired card</strong></div>
+          <div class="dm">Steps to reproduce · trace · video · failing test</div>
+          <div style="margin-top:6px" class="dm">Safari 18, iPhone 15 · ENG-1042</div>
+        </div></div>
+        <div class="txt"><span class="n">06</span><h3>Bug reporting</h3><p>Real bugs land in Linear, Jira or GitHub Issues with repro steps, a trace and the failing test attached.</p></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap split">
+    <div>
+      <p class="kicker">Try it first</p>
+      <h2>Start with a free bug report</h2>
+      <p class="sub" style="margin-bottom:20px">Before you pay anything, I run Playwright against your public site across four browsers and send you what I find, with the test that catches it.</p>
+      <ul class="checks">
+        <li><strong>Read-only.</strong> No form submissions, no logins, nothing touched.</li>
+        <li><strong>Real findings.</strong> Every issue is checked by hand before you see it.</li>
+        <li><strong>Yours either way.</strong> Keep the test whether or not we work together.</li>
+      </ul>
+      <div class="btns" style="margin-top:24px"><a class="btn btn-brand" href="mailto:tjohnson@johnsonreply.com?subject=Free%20bug%20report&amp;body=My%20site%3A%20">Send me your URL</a></div>
+    </div>
 <pre><span class="d">$ npx playwright test</span>
 
 <span class="p">  ✓</span> homepage loads in all browsers <span class="d">(1.2s)</span>
-<span class="p">  ✓</span> signup form renders on mobile <span class="d">(0.9s)</span>
+<span class="p">  ✓</span> signup form renders on iPhone <span class="d">(0.9s)</span>
 <span class="f">  ✘</span> footer links all resolve <span class="d">(3.4s)</span>
 
     Error: https://example.com/terms
@@ -116,86 +279,124 @@ footer p{margin:4px 0}
     Received:   <span class="f">404</span>
 
 <span class="d">  1 failed, 2 passed</span></pre>
-    <p class="sub" style="margin-top:20px;margin-bottom:0">It's the kind of break that ships quietly after a website update, and nobody notices until a prospect does. A suite catches it the day it happens.</p>
   </div>
 </section>
 
-<section id="what">
+<section id="pricing">
   <div class="wrap">
-    <h2>What you get for $1,500</h2>
-    <p class="sub">A working suite in your repo, not a report.</p>
-    <div class="grid">
-      <div class="card"><h3>Your critical flows, tested</h3><p>Signup, login, checkout, booking, whatever makes you money. We agree on the list up front.</p></div>
-      <div class="card"><h3>Every browser your customers use</h3><p>Chrome, Safari, Firefox and mobile Safari, so the iPhone-only bug doesn't slip through.</p></div>
-      <div class="card"><h3>Runs on every deploy</h3><p>Wired into your CI (GitHub Actions, GitLab or similar). A red build means a real problem.</p></div>
-      <div class="card"><h3>Site-wide health checks</h3><p>Broken links, missing images, script errors and mobile layout breaks, across your public pages.</p></div>
-      <div class="card"><h3>Failures that explain themselves</h3><p>Screenshots and traces on every failure, so anyone on the team can see what broke and where.</p></div>
-      <div class="card"><h3>Yours to keep</h3><p>Clean, documented TypeScript your engineers or your next QA hire can extend. No proprietary platform, no subscription.</p></div>
+    <div class="offers-band">
+      <p class="kicker" style="color:#86efac">Pricing</p>
+      <h2>Flat prices. No hourly billing.</h2>
+      <p class="sub">Start with a one-time build, or hand off end-to-end QA entirely.</p>
+      <div class="offers">
+        <div class="offer">
+          <span class="tag">Jump Start</span>
+          <h3>I write your tests.</h3>
+          <div class="price">$1,500 <span>one time</span></div>
+          <ul>
+            <li>Your critical flows covered, from an agreed test plan</li>
+            <li>Chrome, Safari, Firefox and mobile</li>
+            <li>Wired into your CI, running on every PR</li>
+            <li>README and walkthrough so your team can own it</li>
+            <li>Live in 2 weeks</li>
+          </ul>
+          <a class="btn btn-white" href="mailto:tjohnson@johnsonreply.com?subject=Jump%20Start">Start a Jump Start</a>
+        </div>
+        <div class="offer">
+          <span class="tag">Coverage-as-a-Service</span>
+          <h3>I handle it all.</h3>
+          <div class="price">$1,250 <span>per month</span></div>
+          <ul>
+            <li>Everything in Jump Start, with no setup fee</li>
+            <li>New tests as you ship new features</li>
+            <li>Every failure investigated within 1 business day</li>
+            <li>Broken tests repaired, flakes never reach your team</li>
+            <li>Bugs filed in Linear, Jira or GitHub</li>
+            <li>Month to month. Cancel anytime, keep every test</li>
+          </ul>
+          <a class="btn btn-white" href="mailto:tjohnson@johnsonreply.com?subject=Coverage-as-a-Service">Talk about coverage</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="how">
+<section class="alt">
   <div class="wrap">
-    <h2>How it works</h2>
-    <p class="sub">Two weeks from yes to a suite running in your pipeline. All by email unless you'd rather talk.</p>
-    <ol class="steps">
-      <li><strong>Pick the flows</strong><span>You tell me what can't break. I send back a short written test plan to confirm.</span></li>
-      <li><strong>Access</strong><span>A staging URL, a test account and access to the repo. I don't need production data.</span></li>
-      <li><strong>Week 1: build</strong><span>The tests get written against your app, with a progress update midweek.</span></li>
-      <li><strong>Week 2: CI and handoff</strong><span>The suite is wired into your pipeline, gets a README on running and extending it, and comes with a walkthrough.</span></li>
-    </ol>
-  </div>
-</section>
-
-<section id="proof">
-  <div class="wrap">
-    <h2>Proof</h2>
-    <p class="sub">I'm an SDET. Writing test automation is my day job.</p>
+    <p class="kicker">Who's doing the work</p>
+    <h2>An SDET, not an agency</h2>
+    <p class="sub">I'm Tyler Johnson. Writing test automation is my day job. You work directly with me, not an account manager.</p>
     <div class="proof">
       <div class="card">
-        <h3>30 repositories, one standard</h3>
-        <p>In my day job as an SDET at a major US financial institution, I built and standardized Playwright end-to-end automation across 30 repositories for our engineering team. That covered shared fixtures, authentication reuse, CI with traces on failure, and a rollout the team could maintain on its own.</p>
+        <div class="big">30 repos</div>
+        <h3>One Playwright standard</h3>
+        <p>As an SDET at a major US financial institution, I built and standardized Playwright E2E automation across 30 repositories for our engineering team.</p>
       </div>
       <div class="card">
+        <div class="big">Public</div>
         <h3>See the code before you hire</h3>
-        <p>A public reference suite covering page objects, auth reuse, API and network tests, accessibility checks, visual regression and a flaky-to-fixed showcase. It's green in CI.</p>
-        <p style="margin-top:12px"><a href="https://tjohnson012.github.io/playwright-e2e-blueprint/">Live test report</a> · <a href="https://github.com/tjohnson012/playwright-e2e-blueprint">Source on GitHub</a></p>
+        <p>A reference suite showing page objects, auth reuse, API tests, accessibility checks, visual regression and flaky-to-fixed rewrites. Green in CI. <a href="https://tjohnson012.github.io/playwright-e2e-blueprint/">Live report</a> · <a href="https://github.com/tjohnson012/playwright-e2e-blueprint">Source</a></p>
+      </div>
+      <div class="card">
+        <div class="big">4 browsers</div>
+        <h3>Found before you call</h3>
+        <p>Every conversation starts with a real bug found on your site across Chrome, Safari, Firefox and iPhone, checked by hand.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section>
+<section id="faq">
   <div class="wrap">
-    <h2>Questions</h2>
-    <dl>
-      <dt>We're already hiring a QA engineer. Why this?</dt>
-      <dd>Hiring takes months. Your QA hire starts with a working suite on day one instead of an empty repo.</dd>
-      <dt>What stack do you work with?</dt>
-      <dd>Any web app, whatever it's built with. Playwright drives a real browser. The tests are written in TypeScript, or JavaScript if you prefer.</dd>
-      <dt>What happens after the two weeks?</dt>
-      <dd>You own the suite outright. If you want ongoing help later, we can talk, but nothing is required.</dd>
-      <dt>Will you touch our production systems?</dt>
-      <dd>No. Tests run against staging with test accounts. The site checks I run before we talk are read-only. They never submit forms or log in.</dd>
-    </dl>
+    <p class="kicker">FAQ</p>
+    <h2>Frequently asked questions</h2>
+    <div class="faq">
+      <div class="faq-group">
+        <p class="kicker">The tests</p>
+        <details><summary>Am I locked in?</summary><p>No. The tests are plain open-source Playwright in your own repo. If we stop working together, you keep every test and they keep running.</p></details>
+        <details><summary>Can you work with tests we already have?</summary><p>Yes. I can extend an existing Playwright suite, fix a flaky one, or migrate from Cypress or Selenium.</p></details>
+        <details><summary>What do you need from us?</summary><p>A staging URL, test accounts and access to the repo. I never need production data.</p></details>
+        <details><summary>What can you test?</summary><p>Any web app, whatever it's built with: Chrome, Safari, Firefox and mobile browsers, plus API checks alongside the UI tests.</p></details>
+      </div>
+      <div class="faq-group">
+        <p class="kicker">Pricing</p>
+        <details><summary>What's the difference between the two plans?</summary><p>Jump Start is a one-time build that your team runs and maintains. With Coverage-as-a-Service, I run, maintain and extend the suite every month and investigate every failure.</p></details>
+        <details><summary>Do I pay for test creation on the monthly plan?</summary><p>No. Building the initial suite is included, with no setup fee.</p></details>
+        <details><summary>We're hiring a QA engineer. Why do this?</summary><p>Hiring takes months. Your QA hire starts with a working suite instead of an empty repo, and you're covered in the meantime.</p></details>
+        <details><summary>Is there a free trial?</summary><p>The free bug report is the trial: real findings on your own site, plus the test that catches them, before you spend a dollar.</p></details>
+      </div>
+    </div>
   </div>
 </section>
 
-<section id="contact" class="cta">
-  <div class="wrap">
-    <h2>Want to know what's broken on your site?</h2>
-    <p class="sub">Send me your URL. I'll reply with what I find and the test that catches it, at no cost and with no obligation.</p>
-    <a class="btn" href="mailto:tjohnson@johnsonreply.com?subject=Check%20my%20site">Email tjohnson@johnsonreply.com</a>
+<section class="alt">
+  <div class="wrap close">
+    <div class="card">
+      <p class="kicker">For engineering leads</p>
+      <h3>See it on your app.</h3>
+      <p class="sub" style="margin-bottom:22px">Send your URL and get a free bug report, plus a proposed plan for the coverage you need.</p>
+      <a class="btn btn-brand" href="mailto:tjohnson@johnsonreply.com?subject=Free%20bug%20report&amp;body=My%20site%3A%20">Get a free bug report</a>
+    </div>
+    <div class="card">
+      <p class="kicker">For founders</p>
+      <h3>Ship without the QA hire, for now.</h3>
+      <p class="sub" style="margin-bottom:22px">Coverage-as-a-Service costs less than a month of a QA salary, and you can cancel the day your hire starts.</p>
+      <a class="btn btn-line" href="mailto:tjohnson@johnsonreply.com?subject=Coverage-as-a-Service">Email tjohnson@johnsonreply.com</a>
+    </div>
   </div>
 </section>
 </main>
 
 <footer>
   <div class="wrap">
-    <p><strong>Johnson Reply</strong> · Tyler Johnson, SDET · <a href="mailto:tjohnson@johnsonreply.com">tjohnson@johnsonreply.com</a></p>
-    <p>3239 Jefferson Ave, Ste 1 PMB 1018, Cincinnati, OH 45220</p>
-    <p>© 2026 Johnson Reply</p>
+    <div>
+      <p><strong style="color:var(--ink)">Johnson Reply</strong> · Tyler Johnson, SDET</p>
+      <p>3239 Jefferson Ave, Ste 1 PMB 1018, Cincinnati, OH 45220</p>
+    </div>
+    <div>
+      <p><a href="mailto:tjohnson@johnsonreply.com">tjohnson@johnsonreply.com</a></p>
+      <p>© 2026 Johnson Reply</p>
+    </div>
   </div>
 </footer>
 
