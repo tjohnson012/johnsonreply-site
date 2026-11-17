@@ -105,6 +105,12 @@ pre{background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:2
 .offer li::before{content:"✓";position:absolute;left:0;font-weight:800;color:#86efac}
 .offer .btn{align-self:flex-start}
 
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0 0 18px}
+.stat{border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--bg)}
+.stat b{display:block;font-size:34px;letter-spacing:-.02em;color:var(--brand-2);line-height:1.1}
+.stat span{color:var(--muted);font-size:14px}
+.sample-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.sample-grid .card{padding:20px}
 /* proof */
 .proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .proof .card{padding:24px}
@@ -133,7 +139,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 footer p{margin:2px 0}
 
 @media (max-width:900px){
-  .cards,.proof{grid-template-columns:1fr 1fr}
+  .cards,.proof,.stats{grid-template-columns:1fr 1fr}
+  .sample-grid{grid-template-columns:1fr}
   .split,.offers,.faq,.close{grid-template-columns:1fr}
   .offers-band{padding:28px 20px}
 }
@@ -141,6 +148,7 @@ footer p{margin:2px 0}
   .wrap{padding:0 16px}
   .top nav a:not(.cta-link){display:none}
   .cards,.proof{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
   section{padding:60px 0}
   .hero-body{padding:40px 0 64px}
   pre{font-size:12px;padding:16px}
@@ -155,6 +163,7 @@ footer p{margin:2px 0}
       <a class="brand" href="/">Johnson Reply</a>
       <nav>
         <a href="#how">How it works</a>
+        <a href="#sample">Sample</a>
         <a href="#pricing">Pricing</a>
         <a href="#faq">FAQ</a>
         <a class="cta-link" href="mailto:tjohnson@johnsonreply.com?subject=Playwright%20coverage">Contact</a>
@@ -184,7 +193,7 @@ footer p{margin:2px 0}
   <div class="wrap">
     <p class="kicker">How it works</p>
     <h2>The full QA cycle, handled</h2>
-    <p class="sub">Everything a QA engineer does for end-to-end coverage, delivered as a flat-price service.</p>
+    <p class="sub">Everything a QA engineer does for end-to-end coverage, delivered as a flat-price service. (The cards below are illustrations of the output; the <a href="#sample">sample deliverable</a> is the real thing.)</p>
     <div class="cards">
 
       <div class="card">
@@ -287,6 +296,31 @@ footer p{margin:2px 0}
   </div>
 </section>
 
+<section id="sample">
+  <div class="wrap">
+    <p class="kicker">Sample deliverable</p>
+    <h2>Don't take my word for it. Open one.</h2>
+    <p class="sub">A complete Jump Start built for <a href="https://ghost.org">Ghost</a>, the open-source publishing platform, against a written client brief. Everything a client receives is public: the test plan, the suite, CI and the live report.</p>
+    <div class="stats">
+      <div class="stat"><b>20</b><span>tests, written from the client's 4 concerns</span></div>
+      <div class="stat"><b>4</b><span>browsers: Chrome, Safari, Firefox, iPhone</span></div>
+      <div class="stat"><b>0</b><span>retries, sleeps or flaky tests (3 clean runs in a row)</span></div>
+      <div class="stat"><b>1.5 min</b><span>for all 74 browser runs, in CI on every push</span></div>
+    </div>
+    <div class="sample-grid">
+      <div class="card"><h3>Real emails, real links</h3><p>Signup tests read the actual magic-link email from a staging inbox and follow it. Nothing is stubbed.</p></div>
+      <div class="card"><h3>Checks what CSS can hide</h3><p>Members-only posts are checked in the raw HTML, not just on screen, so paid content can't leak to anonymous visitors.</p></div>
+      <div class="card"><h3>Build notes included</h3><p>Seven real snags from the build, including a click that hung for 14 minutes, and how each one was solved.</p></div>
+    </div>
+    <div class="btns" style="margin-top:28px">
+      <a class="btn btn-brand" href="https://tjohnson012.github.io/ghost-e2e-suite/">Open the live test report</a>
+      <a class="btn btn-line" href="https://github.com/tjohnson012/ghost-e2e-suite">Browse the code</a>
+      <a class="btn btn-line" href="https://github.com/tjohnson012/ghost-e2e-suite/blob/main/TEST-PLAN.md">Read the test plan</a>
+      <a class="btn btn-line" href="https://github.com/tjohnson012/ghost-e2e-suite/blob/main/BUILD-NOTES.md">Read the build notes</a>
+    </div>
+  </div>
+</section>
+
 <section id="pricing">
   <div class="wrap">
     <div class="offers-band">
@@ -343,9 +377,9 @@ footer p{margin:2px 0}
         <p>A reference suite showing page objects, auth reuse, API tests, accessibility checks, visual regression and flaky-to-fixed rewrites. Green in CI. <a href="https://tjohnson012.github.io/playwright-e2e-blueprint/">Live report</a> · <a href="https://github.com/tjohnson012/playwright-e2e-blueprint">Source</a></p>
       </div>
       <div class="card">
-        <div class="big">4 browsers</div>
-        <h3>Found before you call</h3>
-        <p>Every conversation starts with a real bug found on your site across Chrome, Safari, Firefox and iPhone, checked by hand.</p>
+        <div class="big">Ghost</div>
+        <h3>A full sample Jump Start</h3>
+        <p>20 tests across 4 browsers for a real open-source app, with test plan, CI and build notes, all public. <a href="https://tjohnson012.github.io/ghost-e2e-suite/">Live report</a> · <a href="https://github.com/tjohnson012/ghost-e2e-suite">Source</a></p>
       </div>
     </div>
   </div>
