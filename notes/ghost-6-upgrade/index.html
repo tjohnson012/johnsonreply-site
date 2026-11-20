@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12 Tests Broke. Zero Bugs. · Johnson Reply</title>
+<meta name="description" content="A major Ghost upgrade broke 12 of 75 Playwright tests. None were product bugs. Then 'passing three times' turned out not to be proof. What I found, and what it means for your test suite.">
+<meta property="og:title" content="A major upgrade broke 12 of my 75 tests. None of them were bugs.">
+<meta property="og:description" content="Triaging a Playwright suite through a major-version upgrade, and the five flaky failures hiding underneath.">
+<meta property="og:url" content="https://johnsonreply.com/notes/ghost-6-upgrade/">
+<meta property="og:type" content="article">
+<link rel="canonical" href="https://johnsonreply.com/notes/ghost-6-upgrade/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23166534'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' stroke='white' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#ffffff;--soft:#f4f6f4;--ink:#121614;--muted:#56605a;--line:#e2e7e3;--brand:#166534;--brand-2:#15803d;--tint:#ecf5ef;--code-bg:#101412;--code-ink:#d8e0db;--fail:#dc4c43;--pass:#22a35a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0e1210;--soft:#151a17;--ink:#e9eeea;--muted:#9ba7a0;--line:#26302a;--brand:#1f7a43;--brand-2:#4ade80;--tint:#16251c;--code-bg:#090b0a}}
+:root[data-theme="dark"]{--bg:#0e1210;--soft:#151a17;--ink:#e9eeea;--muted:#9ba7a0;--line:#26302a;--brand:#1f7a43;--brand-2:#4ade80;--tint:#16251c;--code-bg:#090b0a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+a{color:var(--brand-2)}
+.bar{background:var(--brand)}
+.bar .in{max-width:760px;margin:0 auto;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
+.bar a{color:#fff;text-decoration:none;font-weight:800;font-size:17px}
+.bar a.cta{font-weight:600;font-size:14px;color:rgba(255,255,255,.9)}
+article{max-width:760px;margin:0 auto;padding:48px 20px 24px}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--brand-2);margin:0 0 12px}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.12;letter-spacing:-.02em;margin:0 0 16px}
+.dek{font-size:19px;color:var(--muted);margin:0 0 12px}
+.meta{font-size:14px;color:var(--muted);margin:0 0 36px}
+h2{font-size:26px;letter-spacing:-.01em;line-height:1.2;margin:48px 0 12px}
+h3{font-size:19px;margin:32px 0 6px}
+p{margin:0 0 18px}
+ul{padding-left:22px;margin:0 0 18px}
+li{margin:0 0 8px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--soft);border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+pre{background:var(--code-bg);color:var(--code-ink);border-radius:10px;padding:16px 18px;overflow-x:auto;font-size:13.5px;line-height:1.55;margin:0 0 22px}
+pre code{background:none;border:0;padding:0;color:inherit;font-size:inherit}
+.c{color:#7f8f86}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:8px 0 28px}
+.stat{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:16px}
+.stat b{display:block;font-size:30px;letter-spacing:-.02em;line-height:1.1}
+.stat span{font-size:14px;color:var(--muted)}
+.callout{background:var(--tint);border-left:4px solid var(--brand-2);border-radius:8px;padding:16px 18px;margin:0 0 22px}
+.callout p:last-child{margin:0}
+.tbl{width:100%;border-collapse:collapse;font-size:15px;margin:0 0 24px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:10px 8px;text-align:left;vertical-align:top}
+.tbl th{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.wrapt{overflow-x:auto}
+.end{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:24px;margin:48px 0 8px}
+.end h2{margin-top:0;font-size:22px}
+.btn{display:inline-block;text-decoration:none;font-weight:600;font-size:15px;padding:11px 18px;border-radius:8px;background:var(--brand);color:#fff;margin:4px 8px 4px 0}
+.btn.line{background:none;border:1.5px solid var(--line);color:var(--ink)}
+footer{max-width:760px;margin:0 auto;padding:24px 20px 48px;color:var(--muted);font-size:14px}
+@media (max-width:560px){.stats{grid-template-columns:1fr}body{font-size:16px}}
+</style>
+</head>
+<body>
+<div class="bar"><div class="in"><a href="/">Johnson Reply</a><a class="cta" href="/#sample">See the sample suite →</a></div></div>
+
+<article>
+<p class="kicker">Field notes</p>
+<h1>A major upgrade broke 12 of my 75 tests. None of them were bugs.</h1>
+<p class="dek">Then "it passed three times in a row" turned out not to be proof. Here's everything that broke when I upgraded a Playwright suite across a major version of Ghost, and why each one broke.</p>
+<p class="meta">Tyler Johnson, SDET · November 2026 · 8 min read</p>
+
+<p>I keep a public Playwright suite for <a href="https://ghost.org">Ghost</a>, the open-source publishing platform. It's a sample of the work I do for clients: 20 tests run in Chrome, Safari, Firefox and on an iPhone, which makes 75 runs (counting a one-time login) on every push. It covers member signup by real emailed magic link, members-only posts, the admin editor, and basic site health.</p>
+<p>This week I upgraded it from Ghost 5.130 to Ghost 6.78. That's a major version, so the admin editor was rebuilt and the sign-in API changed. This is the exact situation that makes teams nervous about their E2E suite, so I wrote down everything.</p>
+
+<div class="stats">
+  <div class="stat"><b>12 / 75</b><span>failed on the first run</span></div>
+  <div class="stat"><b>0</b><span>of them were product bugs</span></div>
+  <div class="stat"><b>5 more</b><span>flaky failures found under stress</span></div>
+</div>
+
+<h2>Round 1: twelve failures, five causes</h2>
+<p>Twelve red tests looks like a disaster. It was five problems, each showing up in several browsers. The job is to put every failure in one of two buckets: <strong>the product broke</strong>, or <strong>the product changed on purpose and the test is out of date</strong>. All five were the second kind.</p>
+
+<h3>1. The sign-in API grew an anti-spam token</h3>
+<p>To sign in a test member quickly, the suite calls Ghost's <code>send-magic-link</code> endpoint directly. Ghost 6 now requires an integrity token, and without it the endpoint returns 400. Signing up through the real popup kept working, because Ghost's own popup fetches the token itself. So the shortcut was out of date, not the product.</p>
+<pre><code><span class="c">// fetch the token first, the way Ghost's own popup does</span>
+const tokenRes = await api.get('/members/api/integrity-token/');
+const integrityToken = tokenRes.ok() ? await tokenRes.text() : undefined;
+const res = await api.post('/members/api/send-magic-link/', {
+  data: { email, emailType: 'signup', integrityToken },
+});
+expect(res.status(), await res.text()).toBe(201);</code></pre>
+<p>That last line matters. One test called this endpoint without checking the response, so it failed later with "no email arrived" when the real error was a 400 three steps earlier. <strong>Assert where things happen, not where they're noticed.</strong></p>
+
+<h3>2. A test hook disappeared in the editor rebuild</h3>
+<p>The old selector was <code>[data-test-editor-title-input]</code>. Ghost 6 rebuilt the editor and that attribute is gone. I didn't swap it for the new internal attribute; I switched to what a user sees: <code>getByRole('textbox', { name: 'Post title' })</code>. The accessible name survives redesigns. Internal test hooks don't.</p>
+
+<h3>3. A hidden copy of the editor</h3>
+<p>Clicking into the post body hung. Ghost 6 keeps a second, hidden editor instance in the page, and the old selector matched the hidden one first. Fix: target the visible editor only. This one is worth remembering. "Element exists" and "element a user can interact with" are different things.</p>
+
+<h3>4. The Publish button "covered" by the page. Not a bug.</h3>
+<p>This is the one I was most tempted to report as a bug. Playwright said the Publish button was visible and enabled, but another element was "intercepting pointer events." A real mouse click at those coordinates did nothing.</p>
+<div class="callout"><p>The cause: <strong>Ghost 6 fades the header out while you type</strong> (opacity 0, clicks pass straight through), and brings it back <strong>when the mouse moves</strong>. A person always moves the mouse toward the Publish button. A test that teleports the cursor doesn't. I confirmed it by checking what's under the pointer before and after moving the mouse.</p></div>
+<pre><code><span class="c">// Move the mouse like a person would before reaching for Publish.</span>
+await page.mouse.move(200, 200, { steps: 5 });
+await page.getByRole('button', { name: 'Publish', exact: true }).click();</code></pre>
+<p>Had I filed that as a bug, I'd have spent a client's time on intended behavior. Telling "changed on purpose" from "broke" quickly is most of the value in maintaining a suite.</p>
+
+<h3>5. The confirmation screen changed</h3>
+<p>Ghost 5 showed "Boom! It's out there" after publishing. Ghost 6 closes the dialog and sends you to the posts list. Sometimes it also shows a celebration popup, depending on the state of the site. A test can't depend on "sometimes," so done now means "you're on the posts list." I also checked through the API that the post really is published.</p>
+
+<p>After those fixes, the suite passed <strong>three times in a row</strong>. Normally that's where you'd call it done.</p>
+
+<h2>Round 2: "passed three times" isn't proof</h2>
+<p>CI then failed 1 of 75. One intermittent failure in CI usually means there are more you haven't seen yet. So instead of re-running until it went green, I ran the affected tests 8 to 20 times each, in parallel, and gave every failure a root cause before touching it.</p>
+
+<div class="wrapt"><table class="tbl">
+<tr><th>Intermittent failure</th><th>Root cause</th><th>Fix</th></tr>
+<tr><td>Publish "didn't finish" in CI</td><td><strong>My own assertion.</strong> The confirm button relabels itself "Publishing" and stays on screen. "Confirm button gone" passed the moment the label changed, before publishing finished.</td><td>Wait for the outcome (the posts list), not for a button to change</td></tr>
+<tr><td>Two tests collided</td><td>Post titles used <code>Date.now()</code>. Two parallel workers got the same millisecond, and one test's cleanup deleted the other's post.</td><td>A random suffix on every piece of test data</td></tr>
+<tr><td>Random timeouts everywhere</td><td>Ghost answered in under 60 ms, but its signup popup, search and theme images load from public CDNs that took up to <strong>10 seconds per page</strong></td><td>Cache CDN files once per run and serve them from disk. Same URLs and versions.</td></tr>
+<tr><td>iPhone: "Account" link not found</td><td><code>isVisible()</code> checks once, instantly. On a slow render the menu button "wasn't there." Sometimes it rendered before the theme's script attached, so the tap did nothing.</td><td>Wait for the header to render, then tap until the menu actually opens</td></tr>
+<tr><td>Admin login "failed" under load</td><td>It hadn't. The session was created, but the redirect from <code>/ghost/#/</code> to the dashboard was slow. The test was checking a URL, not "signed in."</td><td>Signed in = the admin navigation is visible</td></tr>
+</table></div>
+
+<p>The first row is the one I'd point to. The flakiest failure was <em>my</em> mistake: an assertion that passed for the wrong reason. Most flaky tests aren't caused by an unreliable product. They're caused by a test asserting something slightly different from what the author meant.</p>
+
+<p>Every fix was proven the same way: the affected tests run 8 to 20 times each, in parallel, with zero failures. Then the full suite went through four clean CI runs. A side effect: with the CDN out of the loop, a full local run dropped from 1.9 minutes to about 30 seconds. CI stayed around 1.5 to 2 minutes, since each CI run starts with an empty cache.</p>
+
+<h2>What I'd tell a team about to upgrade</h2>
+<ul>
+<li><strong>Sort every failure before fixing any.</strong> "Broke" or "changed on purpose." The second kind is most of them, and treating them as bugs wastes everyone's week.</li>
+<li><strong>Select elements the way users find them.</strong> By role and accessible name, not internal test attributes. It's the cheapest upgrade insurance there is.</li>
+<li><strong>Assert outcomes, not in-between states.</strong> "The button changed" isn't "the post published." Most of my flakiness came from this.</li>
+<li><strong>Never use retries to fix flakiness.</strong> Run the test 20 times in parallel instead. If it fails once, there's a cause, and it's usually a race in the test.</li>
+<li><strong>Make test data unique under parallelism.</strong> Timestamps aren't unique enough.</li>
+<li><strong>Don't let your suite depend on someone else's CDN.</strong> Your app can be fast and your tests still time out.</li>
+</ul>
+
+<p>The full suite, the build notes for every fix and the live test report are public: <a href="https://github.com/tjohnson012/ghost-e2e-suite">github.com/tjohnson012/ghost-e2e-suite</a>.</p>
+
+<div class="end">
+  <h2>Want this for your app?</h2>
+  <p>I build Playwright suites like this one, in your repo and running in your CI, and keep them green as your product changes. Send me your URL and I'll send back a real bug I find in it, plus the test that catches it, free.</p>
+  <a class="btn" href="mailto:tjohnson@johnsonreply.com?subject=Free%20bug%20report">Get a free bug report</a>
+  <a class="btn line" href="/#pricing">See pricing</a>
+</div>
+</article>
+
+<footer>
+  <p><strong style="color:var(--ink)">Johnson Reply</strong> · Tyler Johnson, SDET · 3239 Jefferson Ave, Ste 1 PMB 1018, Cincinnati, OH 45220 · <a href="mailto:tjohnson@johnsonreply.com">tjohnson@johnsonreply.com</a></p>
+</footer>
+</body>
+</html>
